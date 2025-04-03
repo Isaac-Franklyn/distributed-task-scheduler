@@ -1,4 +1,4 @@
-package servers
+package httpserver
 
 import (
 	"log"
@@ -26,7 +26,7 @@ func NewHTTPServer(api ports.APIService) *HTTPServer {
 }
 
 func (srv *HTTPServer) SetupRoutes() {
-	srv.engine.POST("/submit-task")
+	srv.engine.POST("/submit-task", PostTask(srv.api))
 }
 
 func (srv *HTTPServer) Start() error {

@@ -7,8 +7,10 @@ import (
 
 func main() {
 
+	//setup the dependencies
 	api := api.NewApiValidator()
 
+	//start the external agents, servers, dbs, raft, etc
 	srv := servers.NewHTTPServer(api)
 	srv.Start()
 
