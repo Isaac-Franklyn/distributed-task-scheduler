@@ -7,14 +7,13 @@
 |-- internal
 |   |-- application
 |   |-- core
-|   |   `-- taskvalidationapi
+|   |   `-- validation
 |   |       `-- validation_impl.go
 |   `-- domain
-|       |-- model
+|       |-- models
 |       |   `-- models.go
 |       `-- ports
-|           `-- api
-|               `-- validate_task.go
+|           `-- validate_task.go
 `-- project-structure.txt
 
-10 directories, 8 files
+9 directories, 8 files
