@@ -8,15 +8,17 @@ import (
 )
 
 type HTTPServer struct {
-	engine *gin.Engine
-	api    ports.APIService
+	engine  *gin.Engine
+	api     ports.APIService
+	cluster ports.RaftService
 }
 
-func NewHTTPServer(api ports.APIService) *HTTPServer {
+func NewHTTPServer(api ports.APIService, cluster ports.RaftService) *HTTPServer {
 
 	server := &HTTPServer{
-		engine: gin.Default(),
-		api:    api,
+		engine:  gin.Default(),
+		api:     api,
+		cluster: cluster,
 	}
 
 	server.SetupRoutes()
@@ -26,7 +28,7 @@ func NewHTTPServer(api ports.APIService) *HTTPServer {
 }
 
 func (srv *HTTPServer) SetupRoutes() {
-	srv.engine.POST("/submit-task", PostTask(srv.api))
+	srv.engine.POST("/submit-task", PostTask(srv.api, srv.cluster))
 }
 
 func (srv *HTTPServer) Start() error {

@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func PostTask(api ports.APIService) gin.HandlerFunc {
+func PostTask(api ports.APIService, cluster ports.RaftService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var task = &models.Task{}
 
@@ -28,6 +28,10 @@ func PostTask(api ports.APIService) gin.HandlerFunc {
 		task.ID = uuid.NewString()
 		task.Retries++
 		task.Status = "Pending"
+
+		if err := cluster.SendTaskToCluster(task); err != nil {
+			ctx.JSON(http.StatusFailedDependency, gin.H{"error": err.Error()})
+		}
 
 		ctx.JSON(http.StatusOK, gin.H{"message": "Task received", "task": task})
 	}
