@@ -1,0 +1,20 @@
+.
+|-- README.md
+|-- cmd
+|   `-- main.go
+|-- go.mod
+|-- go.sum
+|-- internal
+|   |-- application
+|   |-- core
+|   |   `-- taskvalidationapi
+|   |       `-- validation_impl.go
+|   `-- domain
+|       |-- model
+|       |   `-- models.go
+|       `-- ports
+|           `-- api
+|               `-- validate_task.go
+`-- project-structure.txt
+
+10 directories, 8 files
