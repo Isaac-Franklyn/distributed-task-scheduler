@@ -6,14 +6,15 @@
 |-- go.sum
 |-- internal
 |   |-- application
+|   |   `-- applicationports
+|   |       `-- api_port.go
 |   |-- core
-|   |   `-- validation
-|   |       `-- validation_impl.go
+|   |   `-- api
+|   |       `-- api.go
 |   `-- domain
 |       |-- models
 |       |   `-- models.go
 |       `-- ports
-|           `-- validate_task.go
 `-- project-structure.txt
 
-9 directories, 8 files
+10 directories, 8 files

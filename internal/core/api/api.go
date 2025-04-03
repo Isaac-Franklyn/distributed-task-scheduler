@@ -4,16 +4,15 @@ import (
 	"fmt"
 
 	model "github.com/Isaac-Franklyn/distributed-task-scheduler/internal/domain/models"
-	ports "github.com/Isaac-Franklyn/distributed-task-scheduler/internal/domain/ports"
+	"github.com/Isaac-Franklyn/distributed-task-scheduler/internal/domain/ports"
 )
 
-type TaskValidatorImpl struct{}
+type ApiValidator struct{}
 
-func NewTaskValidatorImpl() ports.ValidateTask {
-	return &TaskValidatorImpl{}
+func NewApiValidator() ports.APIService {
+	return &ApiValidator{}
 }
-
-func (s *TaskValidatorImpl) Validate(task *model.Task) error {
+func (a *ApiValidator) Validate(task *model.Task) error {
 
 	if task.Payload == nil || task.Payload == "" {
 		return fmt.Errorf("payload is empty")
