@@ -5,5 +5,5 @@ import "github.com/Isaac-Franklyn/distributed-task-scheduler/internal/domain/mod
 type RaftService interface {
 	StartCluster(n int)
 	GetLeader() (*models.Node, error)
-	SendTaskToCluster(task *models.Task) error
+	CommitTaskToCluster(task *models.Task) error
 }

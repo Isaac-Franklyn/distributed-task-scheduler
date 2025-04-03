@@ -29,7 +29,7 @@ func PostTask(api ports.APIService, cluster ports.RaftService) gin.HandlerFunc {
 		task.Retries++
 		task.Status = "Pending"
 
-		if err := cluster.SendTaskToCluster(task); err != nil {
+		if err := cluster.CommitTaskToCluster(task); err != nil {
 			ctx.JSON(http.StatusFailedDependency, gin.H{"error": err.Error()})
 		}
 

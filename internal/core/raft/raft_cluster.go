@@ -71,7 +71,7 @@ func createRaftNode(id, addr string) *models.Node {
 	return node
 }
 
-func (raftcluster *RaftCluster) SendTaskToCluster(task *models.Task) error {
+func (raftcluster *RaftCluster) CommitTaskToCluster(task *models.Task) error {
 
 	node, err := raftcluster.GetLeader()
 	if err != nil {
