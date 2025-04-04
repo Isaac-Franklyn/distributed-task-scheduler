@@ -11,20 +11,26 @@
 |   |   `-- servers
 |   |       `-- httpserver
 |   |           |-- http_handlers.go
-|   |           `-- http_server.go
+|   |           |-- http_server.go
+|   |           `-- http_server_test.go
 |   |-- core
 |   |   |-- api
-|   |   |   `-- api.go
+|   |   |   |-- api.go
+|   |   |   `-- api_test.go
 |   |   `-- raft
 |   |       |-- fsm.go
 |   |       `-- raft_cluster.go
-|   `-- domain
-|       |-- models
-|       |   `-- models.go
-|       `-- ports
-|           |-- api_port.go
-|           |-- db_port.go
-|           `-- raft_port.go
+|   |-- domain
+|   |   |-- models
+|   |   |   `-- models.go
+|   |   `-- ports
+|   |       |-- api_port.go
+|   |       |-- db_port.go
+|   |       `-- raft_port.go
+|   `-- mocks
+|       |-- api_service_mock.go
+|       |-- db_service_mock.go
+|       `-- raft_service_mock.go
 `-- project-structure.txt
 
-13 directories, 15 files
+14 directories, 20 files
