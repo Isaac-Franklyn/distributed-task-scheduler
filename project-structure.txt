@@ -6,15 +6,25 @@
 |-- go.sum
 |-- internal
 |   |-- application
-|   |   `-- applicationports
-|   |       `-- api_port.go
+|   |   |-- databases
+|   |   |   `-- task_db.go
+|   |   `-- servers
+|   |       `-- httpserver
+|   |           |-- http_handlers.go
+|   |           `-- http_server.go
 |   |-- core
-|   |   `-- api
-|   |       `-- api.go
+|   |   |-- api
+|   |   |   `-- api.go
+|   |   `-- raft
+|   |       |-- fsm.go
+|   |       `-- raft_cluster.go
 |   `-- domain
 |       |-- models
 |       |   `-- models.go
 |       `-- ports
+|           |-- api_port.go
+|           |-- db_port.go
+|           `-- raft_port.go
 `-- project-structure.txt
 
-10 directories, 8 files
+13 directories, 15 files

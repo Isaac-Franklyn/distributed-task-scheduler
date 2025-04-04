@@ -15,6 +15,10 @@ type FSM struct {
 	Db ports.DbService
 }
 
+func NewFSM() *FSM {
+	return &FSM{}
+}
+
 func (fsm *FSM) Apply(logEntry *raft.Log) interface{} {
 
 	var task models.Task
@@ -33,7 +37,7 @@ func (fsm *FSM) Apply(logEntry *raft.Log) interface{} {
 
 	log.Printf("FSM Apply: Successfully saved task %s to DB", task.ID)
 	return nil
-}
+}	
 
 func (fsm *FSM) Snapshot() (raft.FSMSnapshot, error) {
 	log.Println("FSM Snapshot: Snapshot requested but not implemented")

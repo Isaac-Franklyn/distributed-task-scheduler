@@ -45,16 +45,19 @@ func createRaftNode(id, addr string) *models.Node {
 	config := raft.DefaultConfig()
 	config.LocalID = raft.ServerID(id)
 
+	// creating a bolt db for each node to store it's logs
 	store, err := raftboltdb.NewBoltStore(fmt.Sprintf("%s-log.bolt", id))
 	if err != nil {
 		log.Fatalf("Error creating store: %v", err)
 	}
 
+	//creating a tcp protocol transport between nodes
 	transport, err := raft.NewTCPTransport(addr, nil, 3, time.Second, nil)
 	if err != nil {
 		log.Fatalf("Error creating transport: %v", err)
 	}
 
+	//creating a store to store our snapshots of the latest log
 	snapshots, err := raft.NewFileSnapshotStore(".", 1, nil)
 	if err != nil {
 		log.Fatalf("Error creating snapshot store: %v", err)
@@ -62,7 +65,10 @@ func createRaftNode(id, addr string) *models.Node {
 
 	node := &models.Node{ID: id}
 
-	raftNode, err := raft.NewRaft(config, nil, store, store, snapshots, transport)
+	//creating a new FSM
+	fsm := NewFSM()
+
+	raftNode, err := raft.NewRaft(config, fsm, store, store, snapshots, transport)
 	if err != nil {
 		log.Fatalf("Error starting Raft: %v", err)
 	}
