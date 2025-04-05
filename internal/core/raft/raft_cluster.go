@@ -2,6 +2,7 @@ package raft
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -24,7 +25,7 @@ func (raftcluster *RaftCluster) StartCluster(n int) {
 	for i := 0; i < n; i++ {
 
 		id := fmt.Sprintf("node-%d", i+1)
-		addr := fmt.Sprintf("127.0.0.1.%d", 9000+i)
+		addr := fmt.Sprintf("127.0.0.1:%d", 9000+i)
 		node := createRaftNode(id, addr)
 		raftcluster.Cluster = append(raftcluster.Cluster, node)
 	}
@@ -79,11 +80,23 @@ func createRaftNode(id, addr string) *models.Node {
 
 func (raftcluster *RaftCluster) CommitTaskToCluster(task *models.Task) error {
 
-	node, err := raftcluster.GetLeader()
-	if err != nil {
-		return err
-	}
+	nodechan := make(chan models.Node, 1)
+	go func() error {
+		duration := time.Now().Add(2 * time.Second)
 
+		for time.Now().Before(duration) {
+			leader, err := raftcluster.GetLeader()
+			if err != nil {
+				time.Sleep(500 * time.Millisecond) // adjustable backoff
+				continue
+			}
+			nodechan <- *leader
+			return nil
+		}
+		return errors.New("timeout: no leader elected")
+	}()
+
+	node := <-nodechan
 	errchan := make(chan error, 1)
 	fsmchan := make(chan error, 1)
 
@@ -109,7 +122,7 @@ func (raftcluster *RaftCluster) CommitTaskToCluster(task *models.Task) error {
 		errchan <- nil
 		fsmchan <- nil
 
-	}(node, task)
+	}(&node, task)
 
 	if err := <-errchan; err != nil {
 		return err

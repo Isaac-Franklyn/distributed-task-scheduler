@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/Isaac-Franklyn/distributed-task-scheduler/internal/application/databases"
 	servers "github.com/Isaac-Franklyn/distributed-task-scheduler/internal/application/servers/httpserver"
@@ -13,9 +14,9 @@ func main() {
 
 	//setup the dependencies
 	cluster := raft.NewRaftCluster()
-	cluster.StartCluster(5)
+	cluster.StartCluster(1)
 
-	connString := "postgresql://root@localhost:26257/distributed_task_scheduler?sslmode=disable"
+	connString := os.Getenv("DATABASE_URL")
 	db, err := databases.StartNewCockroachDb(connString)
 	if err != nil {
 		log.Fatalf("Database connection failed: %v", err)
