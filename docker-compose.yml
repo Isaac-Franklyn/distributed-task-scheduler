@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  cockroach:
+    image: cockroachdb/cockroach:v22.2.11
+    container_name: cockroach
+    command: start-single-node --insecure --host=0.0.0.0
+    ports:
+      - "26257:26257"
+      - "8081:8081"
+    volumes:
+      - cockroach-data:/cockroach/cockroach-data
+    healthcheck:
+      test: ["CMD", "cockroach", "node", "status", "--insecure"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  task-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-scheduler
+    depends_on:
+      cockroach:
+        condition: service_healthy
+    ports:
+      - "9090:8080"
+    environment:
+      - DATABASE_URL=postgresql://root@cockroach:26257/distributed_task_scheduler?sslmode=disable
+
+volumes:
+  cockroach-data:

@@ -18,5 +18,12 @@ WORKDIR /root/
 
 COPY --from=builder /app/task-scheduler .
 
-CMD ["./task-scheduler"]
+# At the bottom:
+COPY wait-for-cockroach.sh .
+
+RUN chmod +x wait-for-cockroach.sh
+
+# Use entrypoint to wait for the port to open
+ENTRYPOINT ["./wait-for-cockroach.sh", "cockroach", "26257", "./task-scheduler"]
+
 
